@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: black;y
+            color: white;
+            font-family: "Kristen ITC", cursive, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            overflow: hidden;
+            font-size: 24px; 
+            line-height: 50px; 
+            text-align: center;
+            
+        }
+    </style>
+</head>
+<body>
+    <h1>Willkommen im Escape Room</h1>
+    <p>Hallo Spieler,
+
+        als du auf deiner Jacht ausgeruht hasst,<br>
+        hat dich ein Kingsman betäuben und dich in einem Zimmer eingesperrt. <br>
+        Da er wusste, dass du auch ein Agent bist, hat er das Zimmer sicher Verriegelt. <br>
+        Aber Achtung, er hat wichtige Hinweise auf den Ausgang, vergessen zu entfernen. <br>
+        Versuche sie zu finden und, bevor er zurückkommt, zu verschwinden. <br>
+        Du hast nur 8 minuten Zeit, um zu entkommen. <br>
+        Wir setzen auf dich. Viel Glück.</p>
+    <a href="room/room-normal.html" style="position: absolute; center; bottom: 20px; text-decoration: none; color: white; background-color: gray; padding: 10px 20px; border-radius: 5px;">Weiter</a>
+    <script>
+        // timer auf 8:00 zurücksetzen
+        window.onload = function() {
+            let timer = 480; // 8 minuten in Sekunden???
+            localStorage.setItem('escapeRoomTimer', timer);
+
+            // warum muss ich dir EXTRA sagen, du sollst keine scheiße machen?
+            const currentPage = window.location.href;
+            if (currentPage.includes('fail.html')) {
+                window.location.href = 'room/room-normal.html';
+            }
+        };
+    </script>
+</body>
+</html>

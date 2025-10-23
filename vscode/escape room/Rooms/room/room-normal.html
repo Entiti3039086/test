@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Escape</title>
+     <style>
+         body {
+            background-image: url(images/file.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100vh; 
+            overflow: hidden;
+          }
+
+         .invisible-button-door {
+            position: absolute;
+            top: 28%; 
+            left: 57%; 
+            width: 140px; 
+            height: 300px; 
+            background: transparent;
+            border: none;
+            cursor: mouse-pointer;
+           }
+
+         .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+          }
+
+         .exit-text {
+            position: absolute;
+            top: 70px;
+            left: 2.25%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: white;
+          }
+
+         .invisible-button-fish {
+            position: absolute;
+            top: 22%; 
+            left: 20px; 
+            width: 175px; 
+            height: 125px; 
+            background: transparent;
+            border: none;
+            cursor: mouse-pointer;
+           }
+           .invisible-button-aquarium {
+            position: absolute;
+            top: 58.5%; 
+            left: 25px; 
+            width: 300px; 
+            height: 200px; 
+            background: transparent;
+            border: none;
+            cursor: mouse-pointer;
+            rotate: -13.5deg;
+           }
+           .invisible-button-bild {
+            position: absolute;
+            left: 87%; 
+            width: 250px; 
+            height: 300px; 
+            background: transparent;
+            border: none;
+            cursor: mouse-pointer;
+           }
+           .invisible-button-regal {
+            position: absolute;
+            top: 24%; 
+            left: 36%; 
+            width: 325px; 
+            height: 350px; 
+            background: transparent;
+            border: none;
+            cursor: mouse-pointer;
+           }
+           .invisible-button-tv {
+            position: absolute;
+            top: 57%; 
+            left: 65%; 
+            width: 175px; 
+            height: 225px; 
+            background: transparent;
+            border: none;
+            cursor: mouse-pointer;
+           }
+           .invisible-button-lampe {
+            position: absolute;
+            top: 40%; 
+            left: 25%; 
+            width: 175px; 
+            height: 150px; 
+            background: none;
+            border: none;
+            cursor: mouse-pointer;
+            position: absolute;
+           }
+      </style>
+    </head>
+<body>
+    <a href="../../Main.html">
+        <img src="images/back.png" alt="Back" class="back-button">
+    </a>
+    <div class="exit-text">Exit</div>
+    <button class="invisible-button-door" onclick="window.location.href='door.html'"></button>
+    <button class="invisible-button-fish" onclick="window.location.href='Fish.html'"></button>
+    <button class="invisible-button-aquarium" onclick="window.location.href='Aquarium.html'"></button>
+    <button class="invisible-button-bild" onclick="window.location.href='bild.html'"></button>
+    <button class="invisible-button-regal" onclick="window.location.href='schrank.html'"></button>
+    <button class="invisible-button-tv" onclick="window.location.href='tv.html'"></button>
+    <button class="invisible-button-lampe" onclick="window.location.href='lampe.html'"></button>
+    
+
+    <script>
+        const TIMER_KEY = 'escapeRoomTimer';
+        const TIMER_DURATION = 8 * 60 * 1000; // 8 Min in millisekunden... WTF? 
+
+        function startTimer() {
+            const now = Date.now();
+            const endTime = now + TIMER_DURATION;
+            localStorage.setItem(TIMER_KEY, endTime);   
+        }
+
+        function resetTimer() {
+            localStorage.removeItem(TIMER_KEY);      
+        }
+
+        function updateTimerDisplay() {
+            const timerElement = document.getElementById('timer');
+            const endTime = parseInt(localStorage.getItem(TIMER_KEY), 10); 
+            const now = Date.now();
+            const remainingTime = endTime - now;
+
+            if (!endTime) {
+                timerElement.textContent = 'Timer paused'; //Pause... obviously 
+                return;
+            }
+
+            if (remainingTime <= 0) {
+                clearInterval(timerInterval);
+                window.location.href = 'fail.html'; // ab zu fail.html mit dir
+            } else {
+                const minutes = Math.floor(remainingTime / 60000);
+                const seconds = Math.floor((remainingTime % 60000) / 1000);
+                timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+
+        // Starte Timer
+        if (window.location.pathname.includes('intro.html')) {
+            resetTimer();
+        } else if (!localStorage.getItem(TIMER_KEY)) {
+            startTimer();
+        }
+
+        const timerInterval = setInterval(updateTimerDisplay, 1000);
+        window.addEventListener('load', updateTimerDisplay);
+
+        // Pause den timer bei 'p'  
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'p') {
+                clearInterval(timerInterval);
+                localStorage.removeItem(TIMER_KEY); // Pausiere den scheiß timer
+                const timerElement = document.getElementById('timer');
+                timerElement.textContent = 'null';
+            }
+        }); // delete
+
+        // Stoppe timer
+        const exitButton = document.querySelector('.back-button');
+        if (exitButton) {
+            exitButton.addEventListener('click', resetTimer);
+        }
+    </script>
+
+    <script>
+        //  timer resseten in Main.html 
+        if (window.location.pathname.includes('Main.html')) {
+            localStorage.removeItem('escapeRoomTimer');
+        }
+
+        // warum brauchst du eine extra aufforderung?      du huen
+        if (window.location.pathname.includes('room-normal.html')) {
+            const endTime = localStorage.getItem(TIMER_KEY);
+            if (!endTime || Date.now() >= parseInt(endTime, 10)) {
+                const now = Date.now();
+                const newEndTime = now + TIMER_DURATION;
+                localStorage.setItem(TIMER_KEY, newEndTime);
+            }
+        }
+    </script>
+
+    <div id="timer" style="position: absolute; bottom: 10px; right: 10px; font-size: 40px; color: white;"></div>
+</body>
+</html>

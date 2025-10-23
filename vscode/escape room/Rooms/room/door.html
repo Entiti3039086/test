@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Escape</title>
+        <style>
+            body {
+                background-image: url(images/door.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                height: 100vh;
+                overflow: hidden;
+            }
+            .back-button {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                width: 50px;
+                height: 50px;
+                cursor: pointer;
+            }
+            .back-text {
+                position: absolute;
+                top: 70px;
+                left: 20px;
+                font-size: 14px;
+                color: rgb(255, 255, 255);
+            }
+            .code-input1 {
+                position: absolute;
+                top: 55%;
+                left: 53%;
+                transform: translate(-50%, -50%);
+                width: 50px;
+                height: 30px;
+                font-size: 16px;
+                text-align: center;
+                background-color: rgb(182, 160, 128);
+                color: white;
+            }
+            .code-input1::placeholder {
+                color: white;
+                opacity: 0.9; 
+            }
+            .code-input2 {
+                position: absolute;
+                top: 37%;
+                left: 43.5%;
+                transform: translate(-50%, -50%);
+                width: 50px;
+                height: 30px;
+                font-size: 16px;
+                text-align: center;
+                background-color: rgb(182, 160, 128);
+                color: white;
+            }
+            .code-input2::placeholder {
+                color: white;
+                opacity: 0.9; 
+            }
+            .code-input3 {
+                position: absolute;
+                top: 74%;
+                left: 43.5%;
+                transform: translate(-50%, -50%);
+                width: 50px;
+                height: 30px;
+                font-size: 16px;
+                text-align: center;
+                background-color: rgb(182, 160, 128);
+                color: white;
+            }
+            .code-input3::placeholder {
+                color: white;
+                opacity: 0.9; 
+            }
+            .unlock-button {
+                position: absolute;
+                bottom: 44%;
+                left: 60%;
+                transform: translate(-50%, -50%);
+                background-color: rgb(182, 160, 128);
+                color: white;
+                font-size: 16px;
+                padding: 10px 20px;
+                border: none;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+            .unlock-button:hover {
+                background-color: rgb(150, 130, 100);
+            }
+        </style>
+    </head>
+    <body>
+        <a href="room-normal.html">
+            <img src="images/back.png" alt="Back" class="back-button">
+        </a>
+        <div class="back-text">Back</div>
+        <input type="text" maxlength="4" class="code-input1" placeholder="Code1">
+        <input type="text" maxlength="4" class="code-input2" placeholder="Code2">
+        <input type="text" maxlength="4" class="code-input3" placeholder="Code3">
+        <button class="unlock-button" onclick="checkCodes()">Unlock</button>
+        <div id="timer" style="position: absolute; bottom: 10px; right: 10px; font-size: 40px; color: white;"></div>
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                const inputs = document.querySelectorAll('input');
+
+                inputs.forEach((input, index) => {
+                    const key = `savedCode${index + 1}`;
+
+                    input.value = localStorage.getItem(key) || '';
+
+                    input.addEventListener('input', () => {
+                        localStorage.setItem(key, input.value);
+                    });
+                });
+            });
+
+            // Timer logik
+            const TIMER_KEY = 'escapeRoomTimer';
+            const TIMER_DURATION = 8 * 60 * 1000; // 8 minuten in millisekunden
+
+            function startTimer() {
+                const now = Date.now();
+                const endTime = now + TIMER_DURATION;
+                localStorage.setItem(TIMER_KEY, endTime);
+            }
+
+            function resetTimer() {
+                localStorage.removeItem(TIMER_KEY);
+            }
+
+            function updateTimerDisplay() {
+                const timerElement = document.getElementById('timer');
+                const endTime = parseInt(localStorage.getItem(TIMER_KEY), 10);
+                const now = Date.now();
+                const remainingTime = endTime - now;
+
+                if (!endTime) {
+                    timerElement.textContent = 'Timer paused';
+                    return;
+                }
+
+                if (remainingTime <= 0) {
+                    clearInterval(timerInterval);
+                    window.location.href = 'fail.html'; // ab zu fail.html mit dir
+                } else {
+                    const minutes = Math.floor(remainingTime / 60000);
+                    const seconds = Math.floor((remainingTime % 60000) / 1000);
+                    timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }
+
+            if (!localStorage.getItem(TIMER_KEY)) {
+                startTimer();
+            }
+
+            const timerInterval = setInterval(updateTimerDisplay, 1000);
+            window.addEventListener('load', updateTimerDisplay);
+
+            function checkCodes() {
+                const code1 = document.querySelector('.code-input1').value;
+                const code2 = document.querySelector('.code-input2').value;
+                const code3 = document.querySelector('.code-input3').value;
+
+                if (code1 === '1919' && code2 === '1992' && code3 === '1961') {
+                    window.location.href = 'win.html';
+                } else {
+                    alert('Incorrect Code');
+                }                                           //AHHHHH
+            }
+        </script>
+    </body>
+</html>

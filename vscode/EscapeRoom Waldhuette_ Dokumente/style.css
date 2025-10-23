@@ -1,0 +1,82 @@
+html, body {
+height: 100%;
+margin: 0;
+padding: 0;
+}
+
+.fullscreen-bg {
+position: fixed;
+top: 0;
+left: 0;
+width:100%;
+height: 100%;
+object-fit: cover;
+z-index: -1;
+}
+
+.inhalt {
+position: relative;
+color: white; 
+text-align: center;
+padding-top: 50px;
+font-family: sans-sarif;
+} 
+
+body.index-seite {
+background-image: url('img/hintergrund_index.png');
+background-size: cover;
+background-repeat: no-repeat;
+background-position: center;
+height: 100vh;
+overflow: hidden;
+color: white;
+}
+
+body.raum1-seite {
+background-image: url('img/hintergrund_raum1crop.jpg');
+background-size: cover;
+background-repeat: no-repeat;
+background-position: top center;
+background-attachment: fixed;
+height: 100vh;
+overflow: hidden;
+color: white;
+}
+
+body.raum2-seite {
+background-image: url('img/hintergrund_raum2.jpg');
+background-size: contain;
+background-repeat: no-repeat;
+background-position: top center;
+height: 100vh;
+overflow: hidden;
+color: white;
+}
+body.raum3-seite {
+background-image: url('img/hintergrund_raum3.jpg');
+background-size: contain;
+background-repeat: no-repeat;
+background-position: top center;
+height: 100vh;
+overflow: hidden;
+color: white;
+}
+
+body.falschräume {
+background-image: url('img/falschräume.jpg');
+background-size: contain;
+background-repeat: no-repeat;
+background-position: top center;
+height: 100vh;
+overflow: hidden;
+color: white;
+}
+body.ende-seite {
+background-image: url('img/ende.jpg');
+background-size: cover;
+background-repeat: no-repeat;
+background-position: center;
+height: 100vh;
+overflow: hidden;
+color: white;
+}

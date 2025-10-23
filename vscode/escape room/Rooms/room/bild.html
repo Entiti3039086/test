@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Escape</title>
+     <style>
+         body {
+            background-image: url(images/dude.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: auto 100%;
+            background-color: rgb(161, 114, 68); 
+            height: 100vh; 
+            overflow: hidden;
+          }
+          .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+          }
+
+         .Back-text {
+            position: absolute;
+            top: 70px;
+            left: 2.25%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: rgb(255, 255, 255);
+          }
+          .pocket {
+            position: absolute;
+            top: 61%;
+            left: 40.5%;
+            width: 77px;
+            height: 20px;
+            background: transparent;
+            border: 0;
+            cursor: mouse-pointer;
+          }
+    </style>
+    </head>
+    <body>
+        <a href="room-normal.html">
+            <img src="images/back.png" alt="Back" class="back-button">
+        </a>
+        <div class="Back-text">Back</div>
+        <a href="pocket.html" class="pocket"></a>
+        <div id="timer" style="position: absolute; bottom: 10px; right: 10px; font-size: 40px; color: white;"></div>
+        <script>
+            // Timer logik
+            const TIMER_KEY = 'escapeRoomTimer';
+            const TIMER_DURATION = 8 * 60 * 1000; // 8 minutes in Millisekunden
+
+            function startTimer() {
+                const now = Date.now();
+                const endTime = now + TIMER_DURATION;
+                localStorage.setItem(TIMER_KEY, endTime);
+            }
+
+            function resetTimer() {
+                localStorage.removeItem(TIMER_KEY);
+            }
+
+            function updateTimerDisplay() {
+                const timerElement = document.getElementById('timer');
+                const endTime = parseInt(localStorage.getItem(TIMER_KEY), 10);
+                const now = Date.now();
+                const remainingTime = endTime - now;
+
+                if (!endTime) {
+                    timerElement.textContent = 'Timer paused';
+                    return;
+                }
+
+                if (remainingTime <= 0) {
+                    clearInterval(timerInterval);
+                    window.location.href = 'fail.html'; // ab zu fail.html mit dir
+                } else {
+                    const minutes = Math.floor(remainingTime / 60000);
+                    const seconds = Math.floor((remainingTime % 60000) / 1000);
+                    timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }
+
+            if (!localStorage.getItem(TIMER_KEY)) {
+                startTimer();
+            }
+
+            const timerInterval = setInterval(updateTimerDisplay, 1000);
+            window.addEventListener('load', updateTimerDisplay);
+        </script>
+    </body>
+</html>

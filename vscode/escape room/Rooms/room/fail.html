@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Escape</title>
+        <style>
+            body {
+                background-color: black;
+                overflow: hidden;
+                height: 100vh;
+            }
+            .restart {
+            position: absolute;
+                top: 10px;
+                left: 10px;
+                width: 50px;
+                height: 50px;
+                cursor: pointer;
+            }
+            .restart-text {
+                position: absolute;
+                top: 70px;
+                left: 20px;
+                font-size: 14px;
+                color: rgb(255, 255, 255);
+            }
+        </style>
+    </head>
+    <body>
+        <a href="../../Main.html">
+            <img src="images/back.png" alt="Back" class="restart">
+        </a>
+        <div class="back-text">Back</div>
+        <script>
+            // Timer zurück auf 0 wenn im Main-menü
+            if (window.location.pathname.includes('Main.html')) {
+                localStorage.removeItem('escapeRoomTimer');
+            }
+        </script>
+    </body>
+</html>
+
+
